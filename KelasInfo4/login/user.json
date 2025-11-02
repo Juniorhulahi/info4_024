@@ -1,0 +1,14 @@
+[
+  {
+    "username": "info4",
+    "password": "informatika",
+    "role": "mahasiswa",
+    "name": "Marco"
+  },
+  {
+    "username": "admin",
+    "password": "12345",
+    "role": "dosen",
+    "name": "Admin UMMU"
+  }
+]

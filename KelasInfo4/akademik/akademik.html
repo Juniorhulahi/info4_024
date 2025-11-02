@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Halaman Akademik</title>
+  <link rel="stylesheet" href="/dist/css/style.css" />
+
+  <!-- Cegah akses tanpa login -->
+  <script>
+    if (!localStorage.getItem("isLoggedIn")) {
+      window.location.href = "../login/login.html";
+    }
+  </script>
+</head>
+
+<p id="welcome"></p>
+<style>
+  #welcome {
+    text-align: center;
+    margin: 20px auto;
+    font-size: 18px;
+    color: #1b2664;
+    font-weight: 600;
+    background-color: #f0f4ff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    width: fit-content;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: opacity 0.6s ease;
+    opacity: 0; /* disembunyikan dulu */
+  }
+</style>
+
+<script>
+  window.addEventListener("DOMContentLoaded", function () {
+    const name = localStorage.getItem("userName");
+    const welcomeText = document.getElementById("welcome");
+
+    if (name && welcomeText) {
+      welcomeText.textContent = "Selamat datang, " + name + " 👋";
+      setTimeout(() => {
+        welcomeText.style.opacity = 1; // muncul halus
+      }, 200);
+    }
+  });
+</script>
+
+<body>
+  <main>
+    <div class="navbar">
+      <div class="container">
+        <div class="navbar-box">
+          <div class="logo">
+            <h1>AKADEMIK</h1>
+          </div>
+          <ul class="menu">
+            <li><a href="/home/index.html">HOME</a></li>
+            <li><a href="/akademik/absen.html">ABSEN</a></li>
+            <li><a href="/akademik/tugas.html">DAFTAR TUGAS</a></li>
+            <li><a href="https://portal.ummu.ac.id">PORTAL UMMU</a></li>
+            <li><a href="/login/login.html" id="logout">LOGOUT</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Selamat datang -->
+    <section class="welcome">
+      <h2 id="welcome"></h2>
+    </section>
+
+    <!-- Konten Akademik -->
+    <div class="akademik">
+      <div class="container">
+        <div class="akademik-box">
+          <div class="box">
+            <img src="/assets/images/literasi.webp" alt="Literasi" />
+            <div class="desc">
+              <h2>Literasi</h2>
+              <p>Mengembangkan kemampuan berpikir kritis dan memahami dunia sekitar.</p>
+            </div>
+          </div>
+          <div class="box">
+            <img src="/assets/images/praktek.webp" alt="Praktik" />
+            <div class="desc">
+              <h2>Praktik</h2>
+              <p>Melatih keterampilan dan kemampuan berpikir logis.</p>
+            </div>
+          </div>
+          <div class="box">
+            <img src="/assets/images/kreatifitas.webp" alt="Kreativitas" />
+            <div class="desc">
+              <h2>Kreativitas</h2>
+              <p>Mengembangkan ekspresi diri dan rasa percaya diri.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+  </script>
+</body>
+</html>

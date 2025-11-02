@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catatan Tugas Dosen - Info4</title>
+
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-color: #eef1f8;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    header {
+      background-color: #1b2664;
+      color: white;
+      padding: 15px 30px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #1b2664;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-top: 15px;
+      color: #1b2664;
+    }
+
+    input[type="text"], textarea, input[type="date"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 5px;
+      font-size: 15px;
+    }
+
+    textarea {
+      resize: none;
+    }
+
+    /* 🔹 Tombol Akademik — versi kecil dan elegan */
+  .home-btn {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    background-color: #374151;
+    color: white;
+    padding: 6px 10px; /* lebih kecil */
+    font-size: 13px; /* ukuran teks diperkecil */
+    border-radius: 6px;
+    text-decoration: none;
+    transition: 0.3s;
+  }
+
+  .home-btn:hover {
+    background-color: #4b5563;
+    transform: scale(1.05);
+  }
+
+    .btn {
+      display: inline-block;
+      background-color: #2563eb;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 15px;
+    }
+
+    .btn:hover {
+      background-color: #1d4ed8;
+    }
+
+    .btn-delete {
+      background-color: #ef4444;
+    }
+
+    .btn-delete:hover {
+      background-color: #dc2626;
+    }
+
+    .task-list {
+      margin-top: 30px;
+    }
+
+    .task-item {
+      background-color: #f0f4ff;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .task-info {
+      max-width: 80%;
+    }
+
+    .deadline {
+      font-style: italic;
+      color: #555;
+      font-size: 14px;
+    }
+
+    .home-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background-color: #374151;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 8px;
+      text-decoration: none;
+      
+    }
+
+    .home-btn:hover {
+      background-color: #4b5563;
+     
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    📘 Catatan Tugas Dosen Kelas Info4
+    <a href="../akademik/akademik.html" class="home-btn"> Akademik</a>
+  </header>
+
+  <div class="container">
+    <h2>📝 Tambah Catatan Tugas</h2>
+
+    <label for="matkul">Nama Mata Kuliah</label>
+    <input type="text" id="matkul" placeholder="Contoh: Desain Web">
+
+    <label for="deskripsi">Deskripsi Tugas</label>
+    <textarea id="deskripsi" rows="3" placeholder="Tuliskan detail tugas..."></textarea>
+
+    <label for="deadline">Tanggal Deadline</label>
+    <input type="date" id="deadline">
+
+    <button class="btn" id="simpanBtn"> Simpan Catatan</button>
+
+    <div class="task-list" id="taskList">
+      <h3> Daftar Catatan Tugas</h3>
+      <div id="taskItems"></div>
+    </div>
+  </div>
+
+  <script>
+    const simpanBtn = document.getElementById("simpanBtn");
+    const taskItems = document.getElementById("taskItems");
+
+    // Muat catatan dari localStorage saat halaman dibuka
+    function loadTasks() {
+      const tasks = JSON.parse(localStorage.getItem("catatanTugasInfo4")) || [];
+      taskItems.innerHTML = "";
+
+      if (tasks.length === 0) {
+        taskItems.innerHTML = "<p style='color:gray;'>Belum ada catatan tugas.</p>";
+        return;
+      }
+
+      tasks.forEach((tugas, index) => {
+        const div = document.createElement("div");
+        div.classList.add("task-item");
+        div.innerHTML = `
+          <div class="task-info">
+            <strong>${tugas.matkul}</strong><br>
+            ${tugas.deskripsi}<br>
+            <span class="deadline">Deadline: ${tugas.deadline}</span>
+          </div>
+          <button class="btn btn-delete" onclick="hapusTask(${index})">Hapus</button>
+        `;
+        taskItems.appendChild(div);
+      });
+    }
+
+    // Simpan catatan baru
+    simpanBtn.addEventListener("click", () => {
+      const matkul = document.getElementById("matkul").value;
+      const deskripsi = document.getElementById("deskripsi").value;
+      const deadline = document.getElementById("deadline").value;
+
+      if (!matkul || !deskripsi || !deadline) {
+        alert("⚠️ Mohon lengkapi semua kolom sebelum menyimpan!");
+        return;
+      }
+
+      const newTask = { matkul, deskripsi, deadline };
+      const tasks = JSON.parse(localStorage.getItem("catatanTugasInfo4")) || [];
+      tasks.push(newTask);
+      localStorage.setItem("catatanTugasInfo4", JSON.stringify(tasks));
+
+      document.getElementById("matkul").value = "";
+      document.getElementById("deskripsi").value = "";
+      document.getElementById("deadline").value = "";
+
+      loadTasks();
+      alert("✅ Catatan tugas berhasil disimpan!");
+    });
+
+    // Hapus catatan
+    function hapusTask(index) {
+      const tasks = JSON.parse(localStorage.getItem("catatanTugasInfo4")) || [];
+      tasks.splice(index, 1);
+      localStorage.setItem("catatanTugasInfo4", JSON.stringify(tasks));
+      loadTasks();
+    }
+
+    // Jalankan pertama kali
+    loadTasks();
+  </script>
+</body>
+</html>

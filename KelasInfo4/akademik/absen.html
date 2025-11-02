@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daftar Hadir - Kelas Info4</title>
+  <link rel="stylesheet" href="../dist/css/style.css" />
+
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f4f6fa;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    header.navbar {
+      background-color: #1b2664;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      border-radius: 0 0 10px 10px;
+    }
+
+    h2 {
+      margin: 0;
+      letter-spacing: 1px;
+    }
+
+    main.container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    .absen-form, .absen-table {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    select, input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      text-align: center;
+      padding: 8px;
+    }
+
+    th {
+      background-color: #1b2664;
+      color: white;
+    }
+
+    .btn {
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .btn:hover { background-color: #1d4ed8; }
+
+    .btn-green { background-color: #10b981; }
+    .btn-green:hover { background-color: #059669; }
+
+    .btn-orange { background-color: #f59e0b; }
+    .btn-orange:hover { background-color: #d97706; }
+
+    .btn-home {
+      background-color: #374151;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      float: right;
+    }
+
+    .btn-home:hover {
+      background-color: #4b5563;
+    }
+
+    .time-info {
+      text-align: center;
+      color: #555;
+      font-style: italic;
+      margin-bottom: 15px;
+    }
+
+    #rekapContainer {
+      display: none;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header-akademik">
+  <div class="header-container">
+    <h1>Daftar Hadir Kelas Info4</h1>
+    <button id="btnAkademik" class="btn-akademik"> Akademik</button>
+
+  </div>
+</header>
+
+
+  <main class="container">
+    <section class="absen-form">
+      <h3>Form Absen Mahasiswa</h3>
+      <div class="time-info"><span id="tanggalWaktu"></span></div>
+
+      <label for="matkul">Pilih Mata Kuliah:</label>
+      <select id="matkul">
+        <option value=""> Pilih Mata Kuliah </option>
+        <option>INTERAKSI MANUSIA DAN KOMPUTER</option>
+        <option>SISTEM BASIS DATA I</option>
+        <option>KEWARGANEGARAAN</option>
+        <option>DESAIN WEB</option>
+        <option>ALJABAR LINIER DAN MATRIKS</option>
+        <option>STATISTIKA DASAR</option>
+        <option>PEMROGRAMAN BERORIENTASI OBJEK</option>
+        <option>AL ISLAM KEMUHAMMADIYAAN III</option>
+      </select>
+
+      <label for="pertemuan">Pilih Pertemuan:</label>
+      <select id="pertemuan">
+        <option value=""> Pilih Pertemuan </option>
+        <option>Pertemuan 1</option>
+        <option>Pertemuan 2</option>
+        <option>Pertemuan 3</option>
+        <option>Pertemuan 4</option>
+        <option>Pertemuan 5</option>
+        <option>Pertemuan 6</option>
+        <option>Pertemuan 7</option>
+        <option>Pertemuan 8</option>
+        <option>Pertemuan 9</option>
+      </select>
+
+      <button id="tampilkanAbsen" class="btn">📋 Tampilkan Daftar Hadir</button>
+    </section>
+
+    <section class="absen-table">
+      <h3>Daftar Hadir</h3>
+      <table id="absenTable">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama Mahasiswa</th>
+            <th>Status Kehadiran</th>
+            <th>Keterangan</th>
+          </tr>
+        </thead>
+        <tbody id="absenBody"></tbody>
+      </table>
+
+      <button id="saveAbsen" class="btn btn-green">💾 Simpan Absen</button>
+      <button id="printAbsen" class="btn btn-orange">🖨️ Cetak Absen</button>
+      <button id="lihatRekap" class="btn">📂 Lihat Data Tersimpan</button>
+    </section>
+
+    <section id="rekapContainer" class="absen-table">
+      <h3>📜 Rekap Data Absen Tersimpan</h3>
+      <div id="rekapContent"></div>
+    </section>
+  </main>
+
+  <script>
+    function tampilkanWaktu() {
+      const now = new Date();
+      const options = { weekday: "long", year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" };
+      document.getElementById("tanggalWaktu").textContent = now.toLocaleDateString("id-ID", options);
+    }
+    tampilkanWaktu();
+    setInterval(tampilkanWaktu, 60000);
+
+    function goHome() {
+      window.location.href = "../akademik/akademik.html";
+    }
+  </script>
+
+  <script src="../dist/js/script.js"></script>
+</body>
+</html>
